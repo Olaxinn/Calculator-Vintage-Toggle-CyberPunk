@@ -26,7 +26,5 @@ index.html: Ana HTML ve tasarım dosyası.
 
 script.js: Hesap makinesi işlevselliğini sağlayan JavaScript kodları.
 
-style.css (varsa): Ek stil dosyaları.
-
 Geliştirme
 Bu proje öğrenme amacıyla hazırlanmıştır. İsterseniz temalar ve fonksiyonlar geliştirilebilir.
