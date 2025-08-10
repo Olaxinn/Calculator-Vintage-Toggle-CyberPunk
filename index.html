@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="tr" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vintage Hesap Makinesi + Toggle</title>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #3e2f1c, #1f1509);
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.5s ease;
+    }
+
+    /* Hesap makinesi kutusu */
+    #hesapMakinesi {
+      background-color: #4c3b0d;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+      width: 320px;
+      transition: background-color 0.5s ease;
+    }
+
+    /* Ekran */
+    #ekran {
+      background-color: #5b4a1d;
+      box-shadow: inset 0 0 8px #1f1509;
+      border: 2px solid #a07822;
+      border-radius: 12px;
+      color: #f1e3a6;
+      font-weight: 700;
+      font-size: 2rem;
+      text-align: right;
+      padding: 1rem;
+      user-select: none;
+      height: 60px;
+      overflow: hidden;
+      letter-spacing: 1.2px;
+      white-space: nowrap;
+      margin-bottom: 1.5rem;
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+
+    /* Buton genel */
+    button {
+      user-select: none;
+      border-radius: 0.5rem;
+       padding-top: 1rem;
+     padding-bottom: 1rem;
+      font-weight: 700;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      cursor: pointer;
+      box-shadow: none;
+      font-family: inherit;
+        min-height: 56px;
+         font-size: 1.25rem
+    }
+
+    /* Buton renk sınıfları */
+    .btn-number {
+      background-color: #4e4220; /* koyu kahverengi */
+      color: #e0d9a7; /* açık bej */
+    }
+    .btn-action {
+      background-color: #8b6d1a; /* orta koyu hardal */
+      color: #f3e5ab; /* açık bej */
+    }
+    .btn-special {
+      background-color: #7a5d0c; /* koyu hardal */
+      color: #f1e3a6; /* açık sarı */
+    }
+
+    /* Hover efektleri */
+    button:hover {
+      background-color: #a07822 !important;
+      color: #fff !important;
+    }
+
+    /* Toggle */
+    #toggleContainer {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+    }
+    .toggle {
+      width: 70px;
+      height: 35px;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.5s ease;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      background-color: #5a4625;
+    }
+    .toggle-circle {
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: left 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease;
+      background-color: #c8b88d;
+      box-shadow: inset 1px 1px 5px #7f6a3d;
+    }
+    .toggle.cyberpunk {
+      background-color: #27ae60;
+      box-shadow:
+        0 0 8px #27ae60aa,
+        inset 0 0 5px #27ae60aa;
+    }
+    .toggle.cyberpunk .toggle-circle {
+      background: radial-gradient(circle at center, #7ed580, #27ae60);
+      box-shadow:
+        0 0 8px #7ed580aa,
+        inset 0 0 4px #27ae60cc;
+      animation: pulseGlowSoft 3s infinite;
+      left: 37px;
+    }
+    @keyframes pulseGlowSoft {
+      0%, 100% {
+        box-shadow:
+          0 0 8px #7ed580aa,
+          inset 0 0 4px #27ae60cc;
+      }
+      50% {
+        box-shadow:
+          0 0 12px #7ed580bb,
+          inset 0 0 6px #27ae60dd;
+      }
+    }
+
+    /* Temalar */
+    body.vintage {
+      background: linear-gradient(135deg, #3e2f1c, #1f1509);
+    }
+    body.vintage #hesapMakinesi {
+      background-color: #4c3b0d;
+    }
+    body.vintage #ekran {
+      background-color: #5b4a1d;
+      color: #f1e3a6;
+      border-color: #a07822;
+    }
+    body.vintage button.btn-number {
+      background-color: #4e4220;
+      color: #e0d9a7;
+    }
+    body.vintage button.btn-action {
+      background-color: #8b6d1a;
+      color: #f3e5ab;
+    }
+    body.vintage button.btn-special {
+      background-color: #7a5d0c;
+      color: #f1e3a6;
+    }
+
+    body.cyberpunk {
+      background: linear-gradient(135deg, #0f0f3a, #02021a);
+    }
+    body.cyberpunk #hesapMakinesi {
+      background-color: #121629;
+      box-shadow: 0 0 30px #00ffccaa;
+    }
+    body.cyberpunk #ekran {
+      background-color: #041f2f;
+      color: #00ffcc;
+      border-color: #00ffcc;
+      text-shadow: 0 0 8px #00ffccaa;
+    }
+    body.cyberpunk button {
+      background-color: #023b4a;
+      color: #00ffcc;
+      box-shadow: 0 0 5px #00ffcc55;
+      transition: background-color 0.3s ease;
+    }
+    body.cyberpunk button:hover {
+      background-color: #00ffcc !important;
+      color: #021f26 !important;
+      box-shadow: 0 0 15px #00ffcc;
+    }
+  </style>
+</head>
+<body class="vintage">
+
+  <div id="toggleContainer">
+    <div class="toggle" id="toggle">
+      <div class="toggle-circle"></div>
+    </div>
+  </div>
+
+  <div id="hesapMakinesi">
+    <div id="ekran" class="mb-6">0</div>
+    <div class="grid grid-cols-4 gap-2 text-[#d3c96a]">
+      <!-- 1. satır -->
+      <button id="sil" class="btn-special rounded-lg">Sil</button>
+      <button id="temizle" class="btn-special rounded-lg">C</button>
+      <button id="yuzde" class="btn-action rounded-lg">%</button>
+      <button data-deger="/" class="btn-action rounded-lg">÷</button>
+
+      <!-- 2. satır -->
+      <button data-deger="7" class="btn-number rounded-lg">7</button>
+      <button data-deger="8" class="btn-number rounded-lg">8</button>
+      <button data-deger="9" class="btn-number rounded-lg">9</button>
+      <button data-deger="*" class="btn-action rounded-lg">×</button>
+
+      <!-- 3. satır -->
+      <button data-deger="4" class="btn-number rounded-lg">4</button>
+      <button data-deger="5" class="btn-number rounded-lg">5</button>
+      <button data-deger="6" class="btn-number rounded-lg">6</button>
+      <button data-deger="-" class="btn-action rounded-lg">−</button>
+
+      <!-- 4. satır -->
+      <button data-deger="1" class="btn-number rounded-lg">1</button>
+      <button data-deger="2" class="btn-number rounded-lg">2</button>
+      <button data-deger="3" class="btn-number rounded-lg">3</button>
+      <button data-deger="+" class="btn-action rounded-lg">+</button>
+
+      <!-- 5. satır -->
+      <button data-deger="0" class="btn-number rounded-lg col-span-2">0</button>
+      <button data-deger="." class="btn-action rounded-lg">.</button>
+      <button id="esittir" class="btn-special rounded-lg">=</button>
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('toggle');
+    const body = document.body;
+
+    toggle.addEventListener('click', () => {
+      if(body.classList.contains('vintage')) {
+        body.classList.replace('vintage', 'cyberpunk');
+        toggle.classList.add('cyberpunk');
+        toggle.classList.remove('vintage');
+      } else {
+        body.classList.replace('cyberpunk', 'vintage');
+        toggle.classList.add('vintage');
+        toggle.classList.remove('cyberpunk');
+      }
+    });
+  </script>
+  <script src="script.js"></script>
+
+</body>
+</html>
